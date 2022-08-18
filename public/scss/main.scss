@@ -76,7 +76,7 @@ a {
   }
   tbody {
     background-color: #fff;
-
+    width: 100%;
     tr {
       td {
         padding: 10px 0;
@@ -86,6 +86,9 @@ a {
   }
 }
 .linkBox {
+  &.homeLink {
+    margin-top: 50px;
+  }
   a {
     width: 180px;
     height: 46px;

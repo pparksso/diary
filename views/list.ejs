@@ -28,25 +28,28 @@
         </colgroup>
         <thead>
           <th>No.</th>
-          <th>이름</th>
+          <th>기분</th>
           <th>내용</th>
           <th>작성일시</th>
           <th>수정/삭제</th>
         </thead>
         <tbody>
+          <% for(let i = list.length-1; i >= 0; i--) { %>
           <tr>
-            <a href="">
-              <td>1</td>
-              <td>쏘히</td>
-              <td>오늘의 일기 길게 써야지</td>
-              <td>2022.04.15.(토)</td>
-              <td>
-                <button class="upBtn"><span class="material-icons"> edit_note </span></button><button class="delBtn"><span class="material-icons"> clear </span></button>
-            </a>
+            <td><%= list[i].no %></td>
+            <td><%= list[i].name %></td>
+            <td><%= list[i].contents %></td>
+            <td><%= list[i].time %></td>
+            <td>
+              <button class="upBtn"><span class="material-icons"> edit_note </span></button><button class="delBtn"><span class="material-icons"> clear </span></button>
+            </td>
           </tr>
-          </td>
+          <% } %>
         </tbody>
       </table>
     </form>
+    <div class="linkBox homeLink">
+      <a href="/"><span>HOME</span></a>
+    </div>
   </body>
 </html>
