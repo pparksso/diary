@@ -1,0 +1,126 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 18px;
+  color: #333;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background-color: #edf4fa;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+#header {
+  display: flex;
+  height: 160px;
+  align-items: center;
+  h1 {
+    font-size: 60px;
+    font-weight: 900;
+    margin-right: 10px;
+  }
+  .icon {
+    img {
+      width: 48px;
+      margin-bottom: 30px;
+    }
+  }
+}
+
+#top {
+  border: 1px solid #ddd;
+  width: 40vw;
+  margin-bottom: 50px;
+  thead {
+    background-color: #27536b;
+    font-size: 16px;
+    color: #fff;
+    th {
+      font-weight: 700;
+      padding: 15px 0;
+      border-bottom: 1px solid #ddd;
+    }
+  }
+  tbody {
+    background-color: #fff;
+    tr {
+      td {
+        padding: 15px 0;
+        text-align: center;
+        #name {
+          width: 70%;
+        }
+        #contents {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+#bottom {
+  border: 1px solid #ddd;
+  width: 70vw;
+  thead {
+    background-color: #27536b;
+    color: #fff;
+
+    th {
+      font-weight: 700;
+      padding: 15px 0;
+      border-bottom: 1px solid #ddd;
+    }
+  }
+  tbody {
+    background-color: #fff;
+
+    tr {
+      td {
+        padding: 10px 0;
+        text-align: center;
+      }
+    }
+  }
+}
+.linkBox {
+  a {
+    width: 180px;
+    height: 46px;
+    background-color: #27536b;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    span {
+      color: #fff;
+      font-size: 15px;
+      letter-spacing: 1.4px;
+    }
+  }
+}
+input[type="text"] {
+  border: 1px solid #ddd;
+  outline: none;
+  padding: 10px;
+  &:focus {
+    border: 1px solid #fcd57e;
+  }
+}
+button {
+  cursor: pointer;
+  display: table-cell;
+  vertical-align: middle;
+  border: none;
+  background-color: #ddd;
+  .material-icons {
+    font-weight: 900;
+    color: #555;
+    vertical-align: middle;
+    padding: 3px 0;
+  }
+  &.upBtn {
+    margin-right: 10px;
+  }
+}
