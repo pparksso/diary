@@ -58,6 +58,9 @@ app.get("/list", (req, res) => {
       res.render("list", { list: result });
     });
 });
+app.post("/update", (req, res) => {
+  db.collection("contents").findOne("");
+});
 app.listen(PORT, () => {
   console.log(`${PORT}포트`);
 });
