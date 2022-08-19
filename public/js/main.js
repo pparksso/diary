@@ -26,3 +26,24 @@ delBtns.forEach((item, idx) => {
     e.preventDefault();
   });
 });
+
+updateBtns.forEach((item, idx) => {
+  item.addEventListener("click", (e) => {
+    const num = item.dataset.num;
+    axios({
+      method: "POST",
+      url: "/update",
+      data: {
+        num: num,
+      },
+    }).then((res) => {
+      axios({
+        url: "/update",
+        data: {
+          res: res.data,
+        },
+      });
+    });
+    e.preventDefault();
+  });
+});

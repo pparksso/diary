@@ -61,6 +61,20 @@ app.get("/list", (req, res) => {
 app.get("/update", (req, res) => {
   res.render("update");
 });
+app.post("/update", (req, res) => {
+  const num = req.body.num;
+  db.collection("contents").findOne({ no: num }, (err, result) => {
+    const name = result.name;
+    const contents = result.contents;
+    const time = moment(new Date()).format("YYYY.MM.DD(ddd)");
+    const insertData = {
+      name: name,
+      contents: contents,
+      time: time,
+    };
+    res.json(insertData);
+  });
+});
 app.post("/delete", (req, res) => {
   const num = parseInt(req.body.num);
   db.collection("contents").deleteOne({ no: num }, (err, result) => {
