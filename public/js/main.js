@@ -38,10 +38,15 @@ updateBtns.forEach((item, idx) => {
       },
     }).then((res) => {
       axios({
+        method: "GET",
         url: "/update",
-        data: {
-          res: res.data,
+        params: {
+          contents: res.data.contents,
+          name: res.data.name,
+          time: res.data.time,
         },
+      }).then((res) => {
+        location.href = "/update";
       });
     });
     e.preventDefault();

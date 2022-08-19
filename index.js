@@ -59,18 +59,18 @@ app.get("/list", (req, res) => {
     });
 });
 app.get("/update", (req, res) => {
-  res.render("update");
+  const contents = req.query.contents;
+  const name = req.query.name;
+  const time = req.query.time;
+  res.render("update", { contents: contents, name: name, time: time });
 });
 app.post("/update", (req, res) => {
-  const num = req.body.num;
+  const num = parseInt(req.body.num);
   db.collection("contents").findOne({ no: num }, (err, result) => {
-    const name = result.name;
-    const contents = result.contents;
-    const time = moment(new Date()).format("YYYY.MM.DD(ddd)");
     const insertData = {
-      name: name,
-      contents: contents,
-      time: time,
+      name: result.name,
+      contents: result.contents,
+      time: moment(new Date()).format("YYYY.MM.DD(ddd)"),
     };
     res.json(insertData);
   });
