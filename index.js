@@ -58,8 +58,17 @@ app.get("/list", (req, res) => {
       res.render("list", { list: result });
     });
 });
-app.post("/update", (req, res) => {
-  db.collection("contents").findOne("");
+app.get("/update", (req, res) => {
+  res.render("update");
+});
+app.post("/delete", (req, res) => {
+  const num = parseInt(req.body.num);
+  db.collection("contents").deleteOne({ no: num }, (err, result) => {
+    if (err) {
+      console.log(err, "delete err");
+    }
+    res.json({ isDel: result.acknowledged });
+  });
 });
 app.listen(PORT, () => {
   console.log(`${PORT}포트`);
