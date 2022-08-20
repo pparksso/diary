@@ -62,7 +62,14 @@ app.get("/update", (req, res) => {
   const contents = req.query.contents;
   const name = req.query.name;
   const time = req.query.time;
-  res.render("update", { contents: contents, name: name, time: time });
+  const sendData = {
+    contents: contents,
+    name: name,
+    time: time,
+  };
+  res.json(sendData);
+
+  // res.render("update", { contents: contents, name: name, time: time });
 });
 app.post("/update", (req, res) => {
   const num = parseInt(req.body.num);
