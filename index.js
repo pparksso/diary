@@ -58,28 +58,17 @@ app.get("/list", (req, res) => {
       res.render("list", { list: result });
     });
 });
-app.get("/update", (req, res) => {
-  const contents = req.query.contents;
-  const name = req.query.name;
-  const time = req.query.time;
-  const sendData = {
-    contents: contents,
-    name: name,
-    time: time,
-  };
-  res.json(sendData);
-
-  // res.render("update", { contents: contents, name: name, time: time });
-});
 app.post("/update", (req, res) => {
   const num = parseInt(req.body.num);
-  db.collection("contents").findOne({ no: num }, (err, result) => {
-    const insertData = {
-      name: result.name,
-      contents: result.contents,
-      time: moment(new Date()).format("YYYY.MM.DD(ddd)"),
-    };
-    res.json(insertData);
+  db.collection("contents").updateOne({ no: num }, { $set: { update: true } }, (err, result) => {
+    res.json({ isUpdate: true });
+  });
+});
+app.get("/update", (req, res) => {
+  db.collection("contents").findOne({ update: true }, (err, result) => {
+    const name = result.name;
+    const contents = result.contents;
+    res.render("update", { name: name, contents: contents });
   });
 });
 app.post("/delete", (req, res) => {
@@ -90,6 +79,29 @@ app.post("/delete", (req, res) => {
     }
     res.json({ isDel: result.acknowledged });
   });
+});
+app.post("/updateResult", (req, res) => {
+  const name = req.body.name;
+  const contents = req.body.contents;
+  db.collection("contents").updateOne({ update: true }, { $set: { name: name, contents: contents } }, (err, result) => {
+    if (err) {
+      console.log(err, "update err");
+    }
+    db.collection("contents").updateOne(
+      { update: true },
+      {
+        $unset: {
+          update: true,
+        },
+      },
+      (err, result) => {
+        if (err) {
+          console.log(err, "updateresult err");
+        }
+      }
+    );
+  });
+  res.redirect("/list");
 });
 app.listen(PORT, () => {
   console.log(`${PORT}포트`);

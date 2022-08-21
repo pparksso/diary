@@ -37,17 +37,8 @@ updateBtns.forEach((item, idx) => {
         num: num,
       },
     }).then((res) => {
-      axios({
-        method: "GET",
-        url: "/update",
-        params: {
-          contents: res.data.contents,
-          name: res.data.name,
-          time: res.data.time,
-        },
-      }).then((res) => {
-        location.href = "/update";
-      });
+      console.log(res.data.isUpdate);
+      location.href = "/update";
     });
     e.preventDefault();
   });

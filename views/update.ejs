@@ -1,5 +1,5 @@
 <%- include("include/header") %>
-    <form action="/add" method="POST">
+    <form action="/updateResult" method="POST">
       <table id="top">
         <colgroup>
           <col style="width: 20%" />
@@ -16,7 +16,7 @@
             <td><input type="text" name="name" id="name" value="<%= name %>"/></td>
             <td><input type="text" name="contents" id="contents" value="<%= contents %>"/></td>
             <td>
-              <button class="addBtn"><span class="material-icons"> edit_note </span></button>
+              <button class="resultBtn"><span class="material-icons"> edit_note </span></button>
             </td>
           </tr>
         </tbody>
@@ -26,4 +26,5 @@
       <a href="/list"><span>LIST</span></a>
     </div>
   </body>
+
 </html>
