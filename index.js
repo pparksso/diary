@@ -18,8 +18,53 @@ MongoClient.connect(process.env.MONGO_URL, { useUnifiedTopology: true }, (err, c
   db = client.db("diary");
 });
 
-app.use(session({ secret: process.env.COOKIE_SECRET }));
-
+app.use(
+  session({
+    secret: process.env.COOKIE_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 1000 * 60 * 60,
+      httpOnly: true,
+      secure: false,
+    },
+  })
+);
+app.use(passport.session());
+app.use(passport.initialize());
+passport.use(
+  new LocalStrategy(
+    {
+      usernameField: "nickname",
+      passwordField: "pw",
+      session: true,
+      passReqToCallback: false,
+    },
+    (nickname, pw, done) => {
+      db.collection("contents").findOne({ userNickname: nickname }, (err, result) => {
+        if (err) return done(err);
+        if (!result) return done(null, false, { message: "존재하지 않는 닉네임입니다." });
+        if (result) {
+          if (pw === result.userPw) {
+            console.log("로그인 성공");
+            return done(null, result);
+          } else {
+            console.log("로그인 실패");
+            return done(null, false, { message: "비밀번호를 확인해주세요" });
+          }
+        }
+      });
+    }
+  )
+);
+passport.serializeUser((user, done) => {
+  done(null, user.userNickname);
+});
+passport.deserializeUser((nickname, done) => {
+  db.collection("contents").findOne({ userNickname: nickname }, (err, result) => {
+    done(null, result);
+  });
+});
 app.set("port", process.env.PORT || 8080);
 const PORT = app.get("port");
 app.set("view engine", "ejs");
@@ -33,23 +78,48 @@ app.get("/join", (req, res) => {
   res.render("join");
 });
 app.post("/join", (req, res) => {
-  const userNickname = req.body.nickname;
-  const userPw = req.body.pw;
-  const userName = req.body.name;
-  const insertItem = {
-    userNickname: userNickname,
-    userpw: userPw,
-    userName: userName,
-  };
-  db.collection("login").insertOne(insertItem, (err, result) => {
-    if (err) {
-      console.log(err, "insertErr");
-      res.send(`<script>alert("회원가입에 실패했습니다. 다시 시도해주세요")</script>`);
+  db.collection("count").findOne(
+    {
+      name: "user",
+    },
+    (err, result) => {
+      const userNum = result.count;
+      const userNickname = req.body.nickname;
+      const userPw = req.body.pw;
+      const userName = req.body.name;
+      const insertItem = {
+        userNum: userNum + 1,
+        userNickname: userNickname,
+        userpw: userPw,
+        userName: userName,
+      };
+      db.collection("user").insertOne(insertItem, (err, result) => {
+        db.collection("count").updateOne(
+          { name: "user" },
+          {
+            $inc: {
+              count: 1,
+            },
+          },
+          (err, result) => {
+            if (err) {
+              console.log(err, "insertErr");
+              res.send(`<script>alert("회원가입에 실패했습니다. 다시 시도해주세요")</script>`);
+            }
+          }
+        );
+        res.send(`<script>alert("회원가입 되셨습니다."); location.href="/"</script>`);
+      });
     }
-    res.send(`<script>alert("회원가입 되셨습니다."); location.href="/"</script>`);
-  });
+  );
 });
-app.post("/login", (req, res) => {});
+app.post(
+  "/login",
+  passport.authenticate("local", {
+    failureRedirect: "/",
+    successRedirect: "/add",
+  })
+);
 app.get("/add", (req, res) => {
   res.render("add");
 });
