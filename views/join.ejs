@@ -1,0 +1,33 @@
+<%- include("include/header") %>
+  <form action="/join" method="POST" class="joinForm">
+    <div class="join">
+      <div class="inputBox">
+        <label>
+          <div class="label"><span>닉네임</span></div>
+          <input type="text" name="nickname" id="nickname" placeholder="2자 이상">
+        </label>
+      </div>
+        <div class="inputBox">
+          <label>
+            <div class="label">
+              <span>비밀번호</span>
+            </div>
+              <input type="password" name="pw" id="pw" placeholder="8자 이상">
+          </label>
+        </div>
+        <div class="inputBox">
+          <label>
+            <div class="label">
+              <span>이름</span>
+            </div>
+              <input type="text" name="name" id="name">
+          </label>
+        </div>
+    </div>
+    <div class="btns linkBox">
+      <button id="joinBtn"><span>JOIN</span></button>
+      <a href="/"><span>HOME</span></a>
+    </div>
+  </form>
+  </body>
+</html>

@@ -88,10 +88,12 @@ a {
   }
 }
 .linkBox {
+  display: flex;
   &.homeLink {
     margin-top: 50px;
   }
-  a {
+  a,
+  button {
     width: 180px;
     height: 46px;
     background-color: #27536b;
@@ -102,13 +104,24 @@ a {
       color: #fff;
       font-size: 15px;
       letter-spacing: 1.4px;
+      font-family: "Noto Sans KR", sans-serif;
     }
   }
 }
-input[type="text"] {
+.btns {
+  #loginBtn {
+    margin-right: 10px;
+  }
+  #joinBtn {
+    margin-right: 10px;
+  }
+}
+input[type="text"],
+input[type="password"] {
   border: 1px solid #ddd;
   outline: none;
   padding: 10px;
+  font-family: "Noto Sans KR", sans-serif;
   &:focus {
     border: 1px solid #fcd57e;
   }
@@ -127,5 +140,42 @@ button {
     color: #555;
     vertical-align: middle;
     padding: 3px 0;
+  }
+}
+.mainForm {
+  margin-top: 10vh;
+  .inputBox {
+    margin-bottom: 10vh;
+    label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+      span {
+        margin-right: 10px;
+        font-size: 16px;
+        font-weight: 700;
+      }
+    }
+  }
+}
+.joinForm {
+  .join {
+    margin-bottom: 50px;
+    .inputBox {
+      margin-bottom: 15px;
+      label {
+        input {
+          width: 100%;
+        }
+        .label {
+          margin-bottom: 7.5px;
+          span {
+            font-size: 16px;
+            font-weight: 700;
+          }
+        }
+      }
+    }
   }
 }

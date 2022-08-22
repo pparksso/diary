@@ -5,6 +5,9 @@ const dotenv = require("dotenv").config();
 const moment = require("moment");
 moment.locale("ko");
 const MongoClient = require("mongodb").MongoClient;
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
+const session = require("express-session");
 
 let db = null;
 MongoClient.connect(process.env.MONGO_URL, { useUnifiedTopology: true }, (err, client) => {
@@ -15,6 +18,8 @@ MongoClient.connect(process.env.MONGO_URL, { useUnifiedTopology: true }, (err, c
   db = client.db("diary");
 });
 
+app.use(session({ secret: process.env.COOKIE_SECRET }));
+
 app.set("port", process.env.PORT || 8080);
 const PORT = app.get("port");
 app.set("view engine", "ejs");
@@ -23,6 +28,30 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "/public")));
 app.get("/", (req, res) => {
   res.render("index");
+});
+app.get("/join", (req, res) => {
+  res.render("join");
+});
+app.post("/join", (req, res) => {
+  const userNickname = req.body.nickname;
+  const userPw = req.body.pw;
+  const userName = req.body.name;
+  const insertItem = {
+    userNickname: userNickname,
+    userpw: userPw,
+    userName: userName,
+  };
+  db.collection("login").insertOne(insertItem, (err, result) => {
+    if (err) {
+      console.log(err, "insertErr");
+      res.send(`<script>alert("회원가입에 실패했습니다. 다시 시도해주세요")</script>`);
+    }
+    res.send(`<script>alert("회원가입 되셨습니다."); location.href="/"</script>`);
+  });
+});
+app.post("/login", (req, res) => {});
+app.get("/add", (req, res) => {
+  res.render("add");
 });
 app.post("/add", (req, res) => {
   db.collection("count").findOne(
