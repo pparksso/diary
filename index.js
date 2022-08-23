@@ -130,13 +130,13 @@ app.post("/add", (req, res) => {
     (err, result) => {
       const userNum = req.user.userNum;
       const no = result.count;
-      const name = req.body.name;
+      const mood = req.body.mood;
       const contents = req.body.contents;
       const sendTime = moment(new Date()).format("YYYY.MM.DD(ddd)");
       const insertData = {
         userNum: userNum,
         no: no + 1,
-        name: name,
+        mood: mood,
         contents: contents,
         time: sendTime,
       };
