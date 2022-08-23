@@ -8,6 +8,7 @@ const MongoClient = require("mongodb").MongoClient;
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const session = require("express-session");
+let isLogged = false;
 
 let db = null;
 MongoClient.connect(process.env.MONGO_URL, { useUnifiedTopology: true }, (err, client) => {
@@ -20,18 +21,13 @@ MongoClient.connect(process.env.MONGO_URL, { useUnifiedTopology: true }, (err, c
 
 app.use(
   session({
-    secret: process.env.COOKIE_SECRET,
-    resave: false,
+    secret: "anything",
+    resave: true,
     saveUninitialized: false,
-    cookie: {
-      maxAge: 1000 * 60 * 60,
-      httpOnly: true,
-      secure: false,
-    },
   })
 );
-app.use(passport.session());
 app.use(passport.initialize());
+app.use(passport.session());
 passport.use(
   new LocalStrategy(
     {
@@ -39,9 +35,12 @@ passport.use(
       passwordField: "pw",
       session: true,
       passReqToCallback: false,
+      cookie: {
+        maxAge: 1000 * 60 * 60,
+      },
     },
     (nickname, pw, done) => {
-      db.collection("contents").findOne({ userNickname: nickname }, (err, result) => {
+      db.collection("user").findOne({ userNickname: nickname }, (err, result) => {
         if (err) return done(err);
         if (!result) return done(null, false, { message: "존재하지 않는 닉네임입니다." });
         if (result) {
@@ -61,7 +60,7 @@ passport.serializeUser((user, done) => {
   done(null, user.userNickname);
 });
 passport.deserializeUser((nickname, done) => {
-  db.collection("contents").findOne({ userNickname: nickname }, (err, result) => {
+  db.collection("user").findOne({ userNickname: nickname }, (err, result) => {
     done(null, result);
   });
 });
@@ -72,7 +71,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "/public")));
 app.get("/", (req, res) => {
-  res.render("index");
+  res.render("index", { userInfo: req.user });
 });
 app.get("/join", (req, res) => {
   res.render("join");
@@ -90,7 +89,7 @@ app.post("/join", (req, res) => {
       const insertItem = {
         userNum: userNum + 1,
         userNickname: userNickname,
-        userpw: userPw,
+        userPw: userPw,
         userName: userName,
       };
       db.collection("user").insertOne(insertItem, (err, result) => {
@@ -129,11 +128,13 @@ app.post("/add", (req, res) => {
       name: "total",
     },
     (err, result) => {
+      const userNum = req.user.userNum;
       const no = result.count;
       const name = req.body.name;
       const contents = req.body.contents;
       const sendTime = moment(new Date()).format("YYYY.MM.DD(ddd)");
       const insertData = {
+        userNum: userNum,
         no: no + 1,
         name: name,
         contents: contents,
@@ -152,7 +153,7 @@ app.post("/add", (req, res) => {
 });
 app.get("/list", (req, res) => {
   db.collection("contents")
-    .find()
+    .find({ userNum: req.user.userNum })
     .toArray((err, result) => {
       res.render("list", { list: result });
     });
@@ -201,6 +202,12 @@ app.post("/updateResult", (req, res) => {
     );
   });
   res.redirect("/list");
+});
+app.get("/logout", (req, res) => {
+  if (req.user) {
+    req.session.destroy();
+    res.send(`<script>alert("로그아웃 되었습니다."); location.href = "/"</script>`);
+  }
 });
 app.listen(PORT, () => {
   console.log(`${PORT}포트`);

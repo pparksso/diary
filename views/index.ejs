@@ -1,4 +1,5 @@
 <%- include("include/header") %>
+<% if(!userInfo) {%>
   <form action="/login" method="POST" class="mainForm">
     <div class="inputBox">
       <label>
@@ -13,9 +14,41 @@
       </label>
     </div>
     <div class="btns linkBox">
-      <button id="loginBtn"><span>LOGIN</span></button>
       <a href="/join" id="joinBtn"><span>JOIN</span></a>
+      <button id="loginBtn" type="submit"><span>LOGIN</span></button>
     </div>
   </form>
+  <script>
+    const loginBtn = document.querySelector("#loginBtn");
+    const nickname = document.querySelector("#nickname");
+    const password = document.querySelector("#pw");
+    loginBtn.addEventListener("click", ()=> {
+      const nicknameVal = nickname.value;
+      const passwordVal = password.value;
+      if(nicknameVal === "") {
+        alert("닉네임을 입력해주세요.");
+      }
+      if(passwordVal==="") {
+        alert("비밀번호를 입력해주세요.")
+      }
+    })
+  </script>
+  <%} else { %>
+    <div class="btns linkBox inLoggedBox">
+      <button id="addBtn"><span>ADD</span></button>
+      <button id="listBtn"><span>LIST</span></button>
+      <a href="/logout"><span>LOGOUT</span></a>
+    </div>
+    <% } %>
+  <script>
+    const listBtn = document.querySelector("#listBtn");
+    const addBtn = document.querySelector("#addBtn");
+    listBtn.addEventListener("click",()=> {
+      location.href="/list";
+    })
+    addBtn.addEventListener("click",()=> {
+      location.href="/add"
+    })
+  </script>
   </body>
 </html>
