@@ -35,7 +35,6 @@
 ├── / package.json
 ├── / README.md
 ```
-public
 ## 실행방법  
 * 클릭  
 ## 배포
