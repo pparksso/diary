@@ -13,7 +13,12 @@
         </thead>
         <tbody>
           <tr>
-            <td><input type="text" name="name" id="name" value="<%= name %>"/></td>
+            <td><div class="moodBox">
+              <label for="smile"><input type="radio" name="mood" value="/images/common/Smile.png" id="smile" checked><img src="/images/common/Smile.png" alt=""></label>
+              <label for="neutral"><input type="radio" name="mood" value="/images/common/Neutral.png" id="neutral"><img src="/images/common/Neutral.png" alt="" ></label>
+              <label for="crying"><input type="radio" name="mood" value="/images/common/Crying.png" id="crying"><img src="/images/common/Crying.png" alt="" ></label>
+              <label for="angry"><input type="radio" name="mood" value="/images/common/Angry.png" id="angry"><img src="/images/common/Angry.png" alt="" ></label>
+            </div></td>
             <td><input type="text" name="contents" id="contents" value="<%= contents %>"/></td>
             <td>
               <button class="resultBtn"><span class="material-icons"> edit_note </span></button>

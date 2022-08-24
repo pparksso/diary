@@ -166,9 +166,9 @@ app.post("/update", (req, res) => {
 });
 app.get("/update", (req, res) => {
   db.collection("contents").findOne({ update: true }, (err, result) => {
-    const name = result.name;
+    const mood = result.mood;
     const contents = result.contents;
-    res.render("update", { name: name, contents: contents });
+    res.render("update", { mood: mood, contents: contents });
   });
 });
 app.post("/delete", (req, res) => {
@@ -181,9 +181,9 @@ app.post("/delete", (req, res) => {
   });
 });
 app.post("/updateResult", (req, res) => {
-  const name = req.body.name;
+  const mood = req.body.mood;
   const contents = req.body.contents;
-  db.collection("contents").updateOne({ update: true }, { $set: { name: name, contents: contents } }, (err, result) => {
+  db.collection("contents").updateOne({ update: true }, { $set: { mood: mood, contents: contents } }, (err, result) => {
     if (err) {
       console.log(err, "update err");
     }
