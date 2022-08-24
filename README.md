@@ -40,3 +40,5 @@ public
 * 클릭  
 ## 배포
 * heroku :  https://ssoheediary.herokuapp.com/  
+## 블로그  
+* https://velog.io/@pparksso/nodejs-Toy-Project-%EC%9D%BC%EA%B8%B0%EC%9E%A5-%ED%86%A0%EC%9D%B4%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8
